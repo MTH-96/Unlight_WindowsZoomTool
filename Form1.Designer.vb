@@ -193,7 +193,7 @@ Partial Class Form1
         Me.Label2.Name = "Label2"
         Me.Label2.Size = New System.Drawing.Size(78, 21)
         Me.Label2.TabIndex = 16
-        Me.Label2.Text = "原始倍率:"
+        Me.Label2.Text = "調整倍率:"
         '
         'Label1
         '

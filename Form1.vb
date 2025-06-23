@@ -10,8 +10,8 @@ Imports HtmlAgilityPack
 
 Public Class Form1
     Dim MainFormLocation As String = ""
-    Dim appName As String = "unlight_revive"
-    Dim appFullName As String = "UNLIGHT_Revive.exe"
+    Dim appName As String = "UNLIGHT:Revive"
+    Dim appFullName As String = "UNLIGHT-Revive.exe"
     Dim Fixed_WindowsHeight As Integer = 32
     Dim Origin_Width As Integer = 760   '1x倍率的程式寬
     Dim Origin_Height As Integer = 680  '1x倍率的程式高
