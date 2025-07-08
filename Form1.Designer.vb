@@ -65,6 +65,7 @@ Partial Class Form1
         '
         'bt_Confirm
         '
+        Me.bt_Confirm.Enabled = False
         Me.bt_Confirm.Location = New System.Drawing.Point(229, 305)
         Me.bt_Confirm.Name = "bt_Confirm"
         Me.bt_Confirm.Size = New System.Drawing.Size(122, 40)
@@ -75,6 +76,7 @@ Partial Class Form1
         'ckb_TopMost
         '
         Me.ckb_TopMost.AutoSize = True
+        Me.ckb_TopMost.Enabled = False
         Me.ckb_TopMost.Location = New System.Drawing.Point(17, 295)
         Me.ckb_TopMost.Name = "ckb_TopMost"
         Me.ckb_TopMost.Size = New System.Drawing.Size(188, 24)
@@ -85,6 +87,7 @@ Partial Class Form1
         'ckb_ZoomOrNot
         '
         Me.ckb_ZoomOrNot.AutoSize = True
+        Me.ckb_ZoomOrNot.Enabled = False
         Me.ckb_ZoomOrNot.Location = New System.Drawing.Point(17, 321)
         Me.ckb_ZoomOrNot.Name = "ckb_ZoomOrNot"
         Me.ckb_ZoomOrNot.Size = New System.Drawing.Size(140, 24)
@@ -133,6 +136,7 @@ Partial Class Form1
         Me.tb_OriginHeight.ReadOnly = True
         Me.tb_OriginHeight.Size = New System.Drawing.Size(76, 29)
         Me.tb_OriginHeight.TabIndex = 22
+        Me.tb_OriginHeight.Text = "680"
         Me.tb_OriginHeight.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'tb_OriginWidth
@@ -143,6 +147,7 @@ Partial Class Form1
         Me.tb_OriginWidth.ReadOnly = True
         Me.tb_OriginWidth.Size = New System.Drawing.Size(76, 29)
         Me.tb_OriginWidth.TabIndex = 21
+        Me.tb_OriginWidth.Text = "760"
         Me.tb_OriginWidth.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'tb_OriginScale
@@ -153,6 +158,7 @@ Partial Class Form1
         Me.tb_OriginScale.ReadOnly = True
         Me.tb_OriginScale.Size = New System.Drawing.Size(76, 29)
         Me.tb_OriginScale.TabIndex = 20
+        Me.tb_OriginScale.Text = "1.0"
         Me.tb_OriginScale.TextAlign = System.Windows.Forms.HorizontalAlignment.Center
         '
         'Label5

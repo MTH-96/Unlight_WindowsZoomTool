@@ -6,12 +6,13 @@ Imports System.Reflection
 Imports Newtonsoft.Json.Linq
 Imports System.Xml
 Imports HtmlAgilityPack
+Imports MS.Internal.Xml
 
 
 Public Class Form1
     Dim MainFormLocation As String = ""
     Dim appName As String = "UNLIGHT:Revive"
-    Dim appFullName As String = "UNLIGHT-Revive.exe"
+    Dim appFullName As String = "UNLIGHTRevive.exe"
     Dim Fixed_WindowsHeight As Integer = 32
     Dim Origin_Width As Integer = 760   '1x倍率的程式寬
     Dim Origin_Height As Integer = 680  '1x倍率的程式高
@@ -38,8 +39,8 @@ Public Class Form1
 #Region "表單開啟"
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Init_Component()
-        JsonFileLoader(False)
-        HtmlFileLoader(False)
+        'JsonFileLoader(False)      '2025/07/08 遊戲更新後不使用此方法修改視窗
+        'HtmlFileLoader(False)
         AddHandler NumericUpDown1.ValueChanged, AddressOf NumericUpDown1_ValueChanged
         NumericUpDown1.Value = CDbl(OriginScale.ToString("F2"))
         ExeLocationTimer.Interval = 1000
@@ -51,7 +52,7 @@ Public Class Form1
     Private Sub Init_Component()
         MainFormLocation = AppDomain.CurrentDomain.BaseDirectory
         dic_ZoomFileName(0) = MainFormLocation '"F:\SteamLibrary\steamapps\common\UNLIGHTRevive"
-        TB_AppLocation.Text = dic_ZoomFileName(0) + "\" + appFullName
+        TB_AppLocation.Text = dic_ZoomFileName(0) + appFullName
         JsonFile = dic_ZoomFileName(0) + "\" + dic_ZoomFileName(2)
         htmlFile = dic_ZoomFileName(0) + "\" + dic_ZoomFileName(1)
         For Each a In GpBox_App_Position_info.Controls
@@ -181,11 +182,13 @@ Public Class Form1
 
 #Region "確認變更"
     Private Sub bt_Confirm_Click(sender As Object, e As EventArgs) Handles bt_Confirm.Click
-        JsonFileLoader(True)
-        HtmlFileLoader(True)
+        '2025/07/08 遊戲更新後不使用此方法修改視窗
+        'JsonFileLoader(True)           
+        ' HtmlFileLoader(True)
+        '=====================
         bt_Confirm.BackColor = Color.LightGreen
     End Sub
-#End Region 
+#End Region
 
 #Region "開啟程式路徑"
     Private Sub btn_OpenFolder_Click(sender As Object, e As EventArgs) Handles btn_OpenFolder.Click
@@ -195,6 +198,7 @@ Public Class Form1
 
 #Region "JSON檔案修改/讀取"
     Private Sub JsonFileLoader(ByVal EditMode As Boolean)
+        '2025/07/08 遊戲更新後不使用此方法修改視窗
         If File.Exists(JsonFile) Then
             Dim jsonContent As String = File.ReadAllText(JsonFile)
             ' 解析JSON內容為JObject
@@ -224,6 +228,7 @@ Public Class Form1
 
 #Region "HTML檔案修改/讀取"
     Private Sub HtmlFileLoader(ByVal EditMode As Boolean)
+        '2025/07/08 遊戲更新後不使用此方法修改視窗
         Dim scalevalue As Double = NumericUpDown1.Value
         Dim MarginLeft As Integer = Math.Ceiling(-66 + (scalevalue - 1) * 347.5)        '內部影像offset
         Dim MarginTop As Integer = Math.Ceiling(-66 + (scalevalue - 1) * 307.5)        '內部影像offset
@@ -362,17 +367,41 @@ Public Class Form1
 
 #Region "APP開啟/關閉功能"
     Private Sub bt_OnOffApp_Click(sender As Object, e As EventArgs) Handles bt_OnOffApp.Click
+        '2025/07/08 遊戲更新後不使用此方法修改視窗
         Dim exePath As String = TB_AppLocation.Text
         Dim exeName As String = IO.Path.GetFileNameWithoutExtension(exePath)
-        If IsValidPath(exePath) AndAlso FindappStatus = False Then
-            Process.Start(exePath)
+        'If IsValidPath(exePath) AndAlso FindappStatus = False Then
+        '    Process.Start(exePath)
+        'ElseIf FindappStatus = True Then
+        '    Dim searcher As New ManagementObjectSearcher("Select * FROM Win32_Process WHERE Name = '" & exeName & ".exe'")
+        '    Try
+        '        For Each process As ManagementObject In searcher.Get()
+        '            If process("ExecutablePath").ToString().Equals(exePath, StringComparison.OrdinalIgnoreCase) Then
+        '                process.InvokeMethod("Terminate", Nothing)
+        '                Console.WriteLine($"已終止進程: {exeName}")
+        '            End If
+        '        Next
+        '    Catch ex As Exception
+
+        '    End Try
+        'Else
+        '    MessageBox.Show("找不到遊戲執行檔")
+        'End If
+        '===============================
+        Dim psi As New ProcessStartInfo()
+        psi.FileName = TB_AppLocation.Text
+        psi.Arguments = $"--force-device-scale-factor={NumericUpDown1.Text}"
+        psi.UseShellExecute = True
+        psi.WindowStyle = ProcessWindowStyle.Normal
+        If IsValidPath(psi.FileName) AndAlso FindappStatus = False Then
+            Process.Start(psi)
         ElseIf FindappStatus = True Then
-            Dim searcher As New ManagementObjectSearcher("Select * FROM Win32_Process WHERE Name = '" & exeName & ".exe'")
+            Dim searcher As New ManagementObjectSearcher("Select * FROM Win32_Process WHERE Name = '" & appFullName & "'")
             Try
                 For Each process As ManagementObject In searcher.Get()
-                    If process("ExecutablePath").ToString().Equals(exePath, StringComparison.OrdinalIgnoreCase) Then
+                    If process("ExecutablePath").ToString().Equals(psi.FileName, StringComparison.OrdinalIgnoreCase) Then
                         process.InvokeMethod("Terminate", Nothing)
-                        Console.WriteLine($"已終止進程: {exeName}")
+                        Console.WriteLine($"已終止進程: {appFullName}")
                     End If
                 Next
             Catch ex As Exception
@@ -381,6 +410,7 @@ Public Class Form1
         Else
             MessageBox.Show("找不到遊戲執行檔")
         End If
+
     End Sub
     Private Function IsValidPath(pathA As String) As Boolean
         Try
